@@ -1,0 +1,72 @@
+{% extends 'base.html'%}
+{% load static %} {% block content %}
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h2>Uploaded files</h2>
+
+<p>
+ 
+    <a href="{% url 'upload_file' %}" class="btn btn-primary" > Upload File</a>
+
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Download</th>
+      <th>Name</th>
+      <th>Size</th>
+      <th>Date</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for upload in uploads %}
+    <tr>
+      <td>
+        <a href="{{ upload.upload_file.url }}" target="_blank"
+          >{{ upload.upload_file.name }}</a
+        >
+      </td>
+      <td>{{upload.upload_file.name}}</td>
+      <td>{{upload.upload_file.size}}</td>
+      <td>{{upload.upload_date}}</td>
+      <td>
+        <form method="POST" action="{% url 'delete_upload' upload.pk %}">
+            {% csrf_token %} 
+
+            <button type="submit" class="btn btn-danger btn-sm" >Delete</button>
+
+
+        </form>  
+        </td>
+
+        <td>
+            <form method="POST" target="_blank" action="{% url 'draw_graph' upload.pk %}">
+                {% csrf_token %} 
+    
+                <button type="submit" class="btn btn-success btn-sm" >Draw Graph</button>
+    
+    
+            </form>  
+            </td>
+    </tr>
+    {% endfor%}
+  </tbody>
+</table>
+
+<div>
+{% if chart %}
+<img src="data:image/png;base64, {{chart|safe}}" />
+{% endif %}
+</div>
+
+{% endblock %}
+
+</body>
+
+</html>

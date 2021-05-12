@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content%}
+
+<h2>Select the audio file </h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} <small>{{form|crispy}} </small>
+  <button type="submit" class = "btn btn-primary">Submit</button>
+</form>
+
+
+ 
+{% endblock %}
