@@ -27,6 +27,8 @@ urlpatterns = [
     # path('upload_list', uploader_views.upload_list , name='upload_list'),
     path('upload_list', uploader_views.UploadList.as_view() , name='upload_list'),
     path('upload_list/<int:pk>/', uploader_views.delete_upload , name='delete_upload'),
+    path('upload_list/encoded/<int:pk>/', uploader_views.encode_upload , name='encode_upload'),
+    path('upload_list/decoded/<int:pk>/', uploader_views.decode_upload , name='decode_upload'),
     path('upload_list/graph/<int:pk>/', uploader_views.draw_graph , name='draw_graph'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

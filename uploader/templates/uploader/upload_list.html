@@ -21,6 +21,7 @@
       <th>Size</th>
       <th>Date</th>
       <th>Delete</th>
+      <th>Encode</th>
     </tr>
   </thead>
 
@@ -54,11 +55,31 @@
     
             </form>  
             </td>
+
+            <td>
+              <form method="POST" action="{% url 'encode_upload' upload.pk %}">
+                  {% csrf_token %} 
+      
+                  <button type="submit" class="btn btn-success btn-sm" >Encode</button>
+              </form>  
+              </td>
+
+              <td>
+                <form method="POST" action="{% url 'decode_upload' upload.pk %}">
+                    {% csrf_token %} 
+        
+                    <button type="submit" class="btn btn-success btn-sm" >Decode</button>  
+                </form>  
+ 
+                </td>
     </tr>
+    
     {% endfor%}
   </tbody>
 </table>
-
+{% if decoded %}
+<p>{{decoded}}</p>
+      {% endif %} 
 <div>
 {% if chart %}
 <img src="data:image/png;base64, {{chart|safe}}" />

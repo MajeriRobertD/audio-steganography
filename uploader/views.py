@@ -1,12 +1,15 @@
 from typing import List
+from django.db.models.base import Model
 from django.shortcuts import redirect, render
 
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.urls import reverse_lazy
 from .models import Upload
-from .utils import get_plot, get_coords
+from .utils import get_plot, get_coords, encode, decode
 from .forms import UploadForm
+from django.core.files import File
+
 
 class UploadView(CreateView):
     model = Upload
@@ -25,6 +28,23 @@ def delete_upload(request, pk):
         upload.delete()
     return redirect('upload_list')
 
+
+def encode_upload(request, pk):
+    if request.method == 'POST':
+        upload = Upload.objects.get(pk = pk)
+        encode('./' +upload.upload_file.url)
+        instance = Upload.objects.create(upload_file=File(file=open('/home/robert/licenta/app/licenta/media/song_embedded.wav', 'rb'), name='song_embedded.wav')) 
+
+    return redirect('upload_list')
+
+def decode_upload(request, pk):
+    if request.method == 'POST':
+        upload = Upload.objects.get(pk = pk)
+        decoded = decode('./' +upload.upload_file.url)
+    return render(request, 'uploader/upload_list.html', {
+        'decoded': decoded,
+        'uploads': Upload.objects.all(),
+    } )
 
 def draw_graph(request, pk):
     if request.method == 'POST':
