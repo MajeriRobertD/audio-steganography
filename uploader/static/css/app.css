@@ -1,3 +1,73 @@
 body{
     background-color: aliceblue;
 }
+
+
+
+.button{
+    display: inline-block;
+
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    /* background-color: #4CAF50; */
+    border: none;
+    border-radius: 15px;
+    border:none;
+  }
+  
+  .button:hover {background-color: #3bd350}
+  
+  .button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+
+  
+.button_red{
+    display: inline-block;
+
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: red;
+    border: none;
+    border-radius: 15px;
+    border:none;
+  }
+  
+  .button_red:hover {background-color: #8f0e0e}
+  
+  .button_red:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+.form_field{
+    padding: 5px;
+    border: 2px solid #eee;
+  border-radius:10px;
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+  transition: .3s border-color;
+}
+
+.form_field:hover{
+    border: 1px solid #aaa;
+}
+
+
+
+/* 
+  input:required + span:after {
+    content: "Required";
+    color: red;
+  } */
+
+  *:focus {outline:none !important}

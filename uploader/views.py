@@ -32,15 +32,19 @@ def delete_upload(request, pk):
 def encode_upload(request, pk):
     if request.method == 'POST':
         upload = Upload.objects.get(pk = pk)
-        encode('./' +upload.upload_file.url)
-        instance = Upload.objects.create(upload_file=File(file=open('/home/robert/licenta/app/licenta/media/song_embedded.wav', 'rb'), name='song_embedded.wav')) 
+        message = request.POST.get("message")
+        key = request.POST.get("key")
+        encode('./' +upload.upload_file.url, message, key)
+        the_name = "encoded_" + upload.upload_file.name 
+        instance = Upload.objects.create(upload_file=File(file=open('/home/robert/licenta/app/licenta/media/song_embedded.wav', 'rb'), name= the_name)) 
 
     return redirect('upload_list')
 
 def decode_upload(request, pk):
     if request.method == 'POST':
         upload = Upload.objects.get(pk = pk)
-        decoded = decode('./' +upload.upload_file.url)
+        key = request.POST.get("key")
+        decoded = decode('./' +upload.upload_file.url, key)
     return render(request, 'uploader/upload_list.html', {
         'decoded': decoded,
         'uploads': Upload.objects.all(),

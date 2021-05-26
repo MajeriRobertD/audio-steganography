@@ -3,6 +3,9 @@ import wave
 import numpy as np
 import base64
 from io import BytesIO
+from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad, unpad
+BLOCK_SIZE = 32 # Bytes
 
 def get_graph():
     the_buffer = BytesIO()
@@ -41,17 +44,30 @@ def get_coords(filename):
 
     return [t_sq, signal_sound[0]]
 
+def aes_encrypt(message, key):
+    cipher = AES.new(key.encode('utf8'), AES.MODE_ECB)
+    msg = cipher.encrypt(pad(message.encode('UTF-8'), BLOCK_SIZE))
+    return msg
 
-def encode(filename):
+def aes_decrypt(cipher, key):
+    decipher = AES.new(key.encode('utf8'), AES.MODE_ECB)
+    msg_dec = decipher.decrypt(cipher)
+    return unpad(msg_dec, BLOCK_SIZE).decode("UTF-8")
+
+
+def encode(filename, message, key):
     # We will use wave package available in native Python installation to read and write .wav audio file
-    import wave
+
     # read wave audio file
     song = wave.open(filename, mode='rb')
     # Read frames and convert to byte array
     frame_bytes = bytearray(list(song.readframes(song.getnframes())))
     
     # The "secret" text message
-    string='testam algoritmul lsb de criptare buna ziua   ziua!'
+    msg =message
+    msg = aes_encrypt(msg, key)
+
+    string = str(msg, 'latin-1')
     # Append dummy data to fill out rest of the bytes. Receiver shall detect and remove these characters.
     string = string + int((len(frame_bytes)-(len(string)*8*8))/8) *'#'
     # Convert text to bit array
@@ -70,7 +86,7 @@ def encode(filename):
     song.close()
 
 
-def decode(filename):    
+def decode(filename, key):    
     # Use wave package (native to Python) for reading the received audio file
     import wave
     song = wave.open(filename, mode='rb')
@@ -83,8 +99,11 @@ def decode(filename):
     string = "".join(chr(int("".join(map(str,extracted[i:i+8])),2)) for i in range(0,len(extracted),8))
     # Cut off at the filler characters
     decoded = string.split("###")[0]
+    decoded = decoded.encode('latin-1')
+    msg_dec = aes_decrypt(decoded,key)
+    return msg_dec
 
     # Print the extracted text
-    return "Sucessfully decoded: "+decoded
+    # return "Sucessfully decoded: "+decoded
     song.close()
     

@@ -2,6 +2,11 @@
 {% load static %} {% block content %}
 <!DOCTYPE html>
 <html>
+  <head>
+    <link rel="stylesheet"  href="{% static 'css/app.css' %}">
+
+    
+  </head>
 
 <body>
 
@@ -17,11 +22,9 @@
   <thead>
     <tr>
       <th>Download</th>
-      <th>Name</th>
       <th>Size</th>
       <th>Date</th>
       <th>Delete</th>
-      <th>Encode</th>
     </tr>
   </thead>
 
@@ -33,14 +36,13 @@
           >{{ upload.upload_file.name }}</a
         >
       </td>
-      <td>{{upload.upload_file.name}}</td>
       <td>{{upload.upload_file.size}}</td>
       <td>{{upload.upload_date}}</td>
       <td>
         <form method="POST" action="{% url 'delete_upload' upload.pk %}">
             {% csrf_token %} 
 
-            <button type="submit" class="btn btn-danger btn-sm" >Delete</button>
+            <button type="submit" class="btn btn-danger btn-sm button_red" >Delete</button>
 
 
         </form>  
@@ -50,7 +52,7 @@
             <form method="POST" target="_blank" action="{% url 'draw_graph' upload.pk %}">
                 {% csrf_token %} 
     
-                <button type="submit" class="btn btn-success btn-sm" >Draw Graph</button>
+                <button type="submit" class="btn btn-success btn-sm button" >Draw Graph</button>
     
     
             </form>  
@@ -59,8 +61,12 @@
             <td>
               <form method="POST" action="{% url 'encode_upload' upload.pk %}">
                   {% csrf_token %} 
-      
-                  <button type="submit" class="btn btn-success btn-sm" >Encode</button>
+                  
+                  <button type="submit" class="btn btn-success btn-sm button">Encode</button>
+                  <br> </br>
+                  <input type="text" class="form_field" placeholder="Enter your secret message ..." name="message" required>  
+                  <input type="text" class="form_field" placeholder="16 character secret key..." name="key" required>  
+                  <span></span>
               </form>  
               </td>
 
@@ -68,7 +74,10 @@
                 <form method="POST" action="{% url 'decode_upload' upload.pk %}">
                     {% csrf_token %} 
         
-                    <button type="submit" class="btn btn-success btn-sm" >Decode</button>  
+                    <button type="submit" class="btn btn-success btn-sm button ]" >Decode</button>  
+                    <br> </br>
+                    <input type="text" class="form_field" placeholder="Enter your secret key..." name="key" required>  
+                  
                 </form>  
  
                 </td>
@@ -78,7 +87,7 @@
   </tbody>
 </table>
 {% if decoded %}
-<p>{{decoded}}</p>
+<p class="test">{{decoded}}</p>
       {% endif %} 
 <div>
 {% if chart %}
