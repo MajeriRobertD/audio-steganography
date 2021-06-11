@@ -30,6 +30,9 @@
 
   <tbody>
     {% for upload in uploads %}
+    {% if upload.encode_type == "LSB" %}
+    
+    
     <tr>
       <td>
         <a href="{{ upload.upload_file.url }}" target="_blank"
@@ -69,19 +72,21 @@
                   <span></span>
               </form>  
               </td>
-
               <td>
                 <form method="POST" action="{% url 'decode_upload' upload.pk %}">
-                    {% csrf_token %} 
-        
-                    <button type="submit" class="btn btn-success btn-sm button ]" >Decode</button>  
-                    <br> </br>
+                  {% csrf_token %} 
+                  
+                  {% if upload.upload_file.name|slice:":7" == "encoded" %}
+                  <button type="submit" class="btn btn-success btn-sm button ]" >Decode</button>  
+                  <br> </br>
                     <input type="text" class="form_field" placeholder="Enter your secret key..." name="key" required>  
+                    {% endif %}
                   
                 </form>  
  
                 </td>
     </tr>
+    {% endif %}
     
     {% endfor%}
   </tbody>

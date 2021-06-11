@@ -25,10 +25,13 @@ urlpatterns = [
     path('', uploader_views.UploadView.as_view(), name='fileupload'),
     path('upload_list/upload_file', uploader_views.UploadView.as_view() , name='upload_file'),
     # path('upload_list', uploader_views.upload_list , name='upload_list'),
-    path('upload_list', uploader_views.UploadList.as_view() , name='upload_list'),
+    path('upload_list', uploader_views.UploadList.as_view() , name='upload_list_LSB'),
+    path('upload_list/phase', uploader_views.UploadListPhase.as_view() , name='upload_list_phase'),
     path('upload_list/<int:pk>/', uploader_views.delete_upload , name='delete_upload'),
     path('upload_list/encoded/<int:pk>/', uploader_views.encode_upload , name='encode_upload'),
+    path('upload_list/encoded_phase/<int:pk>/', uploader_views.encode_upload_phase , name='encode_upload_phase'),
     path('upload_list/decoded/<int:pk>/', uploader_views.decode_upload , name='decode_upload'),
+    path('upload_list/decoded_phase/<int:pk>/', uploader_views.decode_upload_phase , name='decode_upload_phase'),
     path('upload_list/graph/<int:pk>/', uploader_views.draw_graph , name='draw_graph'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

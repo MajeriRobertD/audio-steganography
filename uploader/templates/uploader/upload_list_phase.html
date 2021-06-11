@@ -1,0 +1,106 @@
+{% extends 'base.html'%}
+{% load static %} {% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet"  href="{% static 'css/app.css' %}">
+
+    
+  </head>
+
+<body>
+
+<h2>Uploaded files</h2>
+
+<p>
+ 
+    <a href="{% url 'upload_file' %}" class="btn btn-primary" > Upload File</a>
+
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Download</th>
+      <th>Size</th>
+      <th>Date</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for upload in uploads %}
+    {% if upload.encode_type == "phase" %}
+    
+    
+    <tr>
+      <td>
+        <a href="{{ upload.upload_file.url }}" target="_blank"
+          >{{ upload.upload_file.name }}</a
+        >
+      </td>
+      <td>{{upload.upload_file.size}}</td>
+      <td>{{upload.upload_date}}</td>
+      <td>
+        <form method="POST" action="{% url 'delete_upload' upload.pk %}">
+            {% csrf_token %} 
+
+            <button type="submit" class="btn btn-danger btn-sm button_red" >Delete</button>
+
+
+        </form>  
+        </td>
+
+        <td>
+            <form method="POST" target="_blank" action="{% url 'draw_graph' upload.pk %}">
+                {% csrf_token %} 
+    
+                <button type="submit" class="btn btn-success btn-sm button" >Draw Graph</button>
+    
+    
+            </form>  
+            </td>
+
+            <td>
+              <form method="POST" action="{% url 'encode_upload_phase' upload.pk %}">
+                  {% csrf_token %} 
+                  
+                  <button type="submit" class="btn btn-success btn-sm button">Phase Encode</button>
+                  <br> </br>
+                  <input type="text" class="form_field" placeholder="Enter your secret message ..." name="message" required>  
+                  <span></span>
+              </form>  
+              </td>
+
+              <td>
+                <form method="POST" action="{% url 'decode_upload_phase' upload.pk %}">
+                    {% csrf_token %} 
+                    {% if upload.upload_file.name|slice:":5" == "phase" %}
+        
+                    <button type="submit" class="btn btn-success btn-sm button ]" >Phase Decode</button>  
+                    <br> </br>
+                    <input type="text" class="form_field" placeholder="Enter segment width..." name="segment" required>  
+                    {% endif %}
+                </form>  
+ 
+                </td>
+    </tr>
+    {% endif %}
+    
+    {% endfor%}
+  </tbody>
+</table>
+{% if decoded %}
+<p class="test">{{decoded}}</p>
+      {% endif %} 
+<div>
+{% if chart %}
+<img src="data:image/png;base64, {{chart|safe}}" />
+{% endif %}
+</div>
+
+{% endblock %}
+
+</body>
+
+</html>

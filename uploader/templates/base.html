@@ -17,6 +17,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet"  href="{% static 'css/app.css' %}">
+    <link rel="icon"href="{% static 'favicons/favicon.ico' %}">
 
     <title>Audio Steganography</title>
   </head>
@@ -33,7 +34,10 @@
                 <a class="nav-link" href="{% url 'fileupload' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'upload_list' %}">Upload List</a>
+                <a class="nav-link" href="{% url 'upload_list_LSB' %}">LSB Upload List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'upload_list_phase' %}">Phase Upload List</a>
               </li>
             </ul>
           </div>
