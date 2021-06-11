@@ -46,11 +46,15 @@ def encode_upload_phase(request, pk):
     if request.method == 'POST':
         upload = Upload.objects.get(pk = pk)
         message = request.POST.get("message")
-        hide('./' +upload.upload_file.url, '/home/robert/licenta/app/licenta/media/phase_song.wav', message)
+        seg_string = hide('./' +upload.upload_file.url, '/home/robert/licenta/app/licenta/media/phase_song.wav', message)
         the_name = "phase_" + upload.upload_file.name 
         instance = Upload.objects.create(upload_file=File(file=open('/home/robert/licenta/app/licenta/media/phase_song.wav', 'rb'), name= the_name), encode_type = "phase") 
 
-    return redirect('upload_list_phase')
+    return render(request, 'uploader/upload_list_phase.html', {
+        'seg_string': seg_string,
+        'uploads': Upload.objects.all(),
+    } )
+
 
 
 def decode_upload(request, pk):
@@ -66,7 +70,8 @@ def decode_upload(request, pk):
 def decode_upload_phase(request, pk):
     if request.method == 'POST':
         upload = Upload.objects.get(pk = pk)
-        segment = int(request.POST.get("segment"))
+        seg_string = request.POST.get("segment")
+        segment = int(seg_string)
         decoded = recover('./' +upload.upload_file.url, segment)
     return render(request, 'uploader/upload_list_phase.html', {
         'decoded': decoded,

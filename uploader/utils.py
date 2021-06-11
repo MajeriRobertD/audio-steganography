@@ -134,6 +134,7 @@ def chunks(l, n):
 
 def arg(z):
     """
+    source: https://github.com/Galarius/py-stego-phase
     Argument of a complex number
     :param z: complex number
     :return:  arg(z)
@@ -143,6 +144,7 @@ def arg(z):
 
 def vec_2_str(vec):
     """
+     source: https://github.com/Galarius/py-stego-phase
     Convert vector of integers to string.
     :param vec: [int, int, ...]
     :return: string
@@ -153,6 +155,7 @@ def vec_2_str(vec):
 
 def str_2_vec(str):
     """
+    source: https://github.com/Galarius/py-stego-phase
     Convert vector of integers to string.
     :param str: string
     :return:    [int, int, int, ...]
@@ -162,6 +165,7 @@ def str_2_vec(str):
 
 def d_2_b(x, size=8):
     """
+    source: https://github.com/Galarius/py-stego-phase
     Convert decimal to byte list
     :param x:    decimal
     :param size: the size of byte list
@@ -177,6 +181,7 @@ def d_2_b(x, size=8):
 
 def b_2_d(x):
     """
+    source: https://github.com/Galarius/py-stego-phase
     Convert byte list to decimal
     :param x:   byte list
     :return:    decimal
@@ -218,6 +223,7 @@ def wav_load(file_name):
 
 def wav_save(file_name, samples, nchannels=2, sampwidth=2, framerate=44100, nframes=None, comptype='NONE', compname='not compressed'):
     """
+    source: https://github.com/Galarius/py-stego-phase
     Save wav file.
     :param file_name: file name
     :param samples:   samples = (left, right)
@@ -243,16 +249,18 @@ def wav_save(file_name, samples, nchannels=2, sampwidth=2, framerate=44100, nfra
 
 
 def audio_decode(in_data, channels):
+    # source: https://github.com/Galarius/py-stego-phase
     result = np.fromstring(in_data, dtype=np.int16)
     chunk_length = len(result) // channels
     output = np.reshape(result, (chunk_length, channels))
-    # output = result.values.reshape([chunk_length, channels])
+   
     l, r = np.copy(output[:, 0]), np.copy(output[:, 1])
 
     return l.tolist(), r.tolist()
 
 
 def audio_encode(samples):
+    # source: https://github.com/Galarius/py-stego-phase
     l, r, = samples
     interleaved = np.array([l, r]).flatten('F')
     out_data = interleaved.astype(np.int16).tostring()
@@ -266,6 +274,7 @@ def audio_encode(samples):
 
 def hide(source, destination, message):
     """
+    source: https://github.com/Galarius/py-stego-phase
     :param source:  source stego container filename
     :param destination:    dest stego container filename
     :param message:       message to hide
@@ -359,11 +368,12 @@ def hide(source, destination, message):
     # to recover the message the one must know the segment width, used in the process
     print ("\nDone.\n")
     print(segment_width)
-    return segment_width
+    return str(segment_width)
 
 
 def recover(source, segment_width):
     """
+    source: https://github.com/Galarius/py-stego-phase
     :param source: filename for the file with integrated message
     :param segment_width: segment width
     :return: message
